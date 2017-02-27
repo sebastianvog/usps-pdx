@@ -1,0 +1,65 @@
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "1.0.0"
+  title: <USPS PDX Implementation>
+host: pdx.usps.com
+schemes:
+  - https
+produces:
+ - "application/json"
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: HTTP Basic Authentication. Works over `HTTP` and `HTTPS`
+    
+# Describe your paths here
+paths:
+  # This is a path endpoint. Change it.
+  /api/manifests:
+    # This is a HTTP operation
+    get:
+      security:
+       - basicAuth: []
+      
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Get a list of uploaded files
+      # This is array of GET operation parameters:
+      parameters:
+        # An example parameter that is in query 
+        -
+          name: pageNumber
+          in: query
+          description: pagerNumber to retrieve
+          required: false
+          type: number
+          format: integer
+        -
+          name: pageSize
+          in: query
+          description: PageSize, Maximum is 100
+          required: false
+          type: number
+          format: integer
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            title: Return
+            type: object
+            items:
+              title: Person
+              type: object
+              properties:
+                name:
+                  type: string
+                single:
+                  type: boolean
