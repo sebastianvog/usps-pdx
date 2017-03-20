@@ -19,7 +19,7 @@ import { Observable }                                        from 'rxjs/Observab
 import 'rxjs/add/operator/map';
 
 import * as models                                           from '../model/models';
-import { BASE_PATH }                                         from '../variables';
+import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
 /* tslint:disable:no-unused-variable member-ordering */
@@ -38,21 +38,6 @@ export class DefaultApi {
         if (configuration) {
             this.configuration = configuration;
         }
-    }
-
-    /**
-     * 
-     * Extends object by coping non-existing properties.
-     * @param objA object to be extended
-     * @param objB source object
-     */
-    private extendObj<T1,T2>(objA: T1, objB: T2) {
-        for(let key in objB){
-            if(objB.hasOwnProperty(key)){
-                (objA as any)[key] = (objB as any)[key];
-            }
-        }
-        return <T1&T2>objA;
     }
 
     /**
@@ -85,12 +70,20 @@ export class DefaultApi {
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
         if (pageNumber !== undefined) {
-            queryParameters.set('pageNumber', <any>pageNumber);
-        }
-        if (pageSize !== undefined) {
-            queryParameters.set('pageSize', <any>pageSize);
+            if(pageNumber instanceof Date) {
+                queryParameters.set('pageNumber', <any>pageNumber.d.toISOString());
+            } else {
+                queryParameters.set('pageNumber', <any>pageNumber);
+            }
         }
 
+        if (pageSize !== undefined) {
+            if(pageSize instanceof Date) {
+                queryParameters.set('pageSize', <any>pageSize.d.toISOString());
+            } else {
+                queryParameters.set('pageSize', <any>pageSize);
+            }
+        }
 
         // to determine the Content-Type header
         let consumes: string[] = [
@@ -100,26 +93,22 @@ export class DefaultApi {
         let produces: string[] = [
             'application/json'
         ];
-        
+
         // authentication (basicAuth) required
         // http basic authentication required
-        if (this.configuration.username || this.configuration.password)
-        {
+        if (this.configuration.username || this.configuration.password) {
             headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
         }
-            
-
-
 
         let requestOptions: RequestOptionsArgs = new RequestOptions({
             method: RequestMethod.Get,
             headers: headers,
             search: queryParameters
         });
-        
+
         // https://github.com/swagger-api/swagger-codegen/issues/4037
         if (extraHttpRequestParams) {
-            requestOptions = this.extendObj(requestOptions, extraHttpRequestParams);
+            requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
         }
 
         return this.http.request(path, requestOptions);
