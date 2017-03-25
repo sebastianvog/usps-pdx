@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { PdxServiceService} from './pdx-service.service'
 import { DefaultApi} from './api/api/DefaultApi'
+import {DropdownModule } from 'ng2-bootstrap/dropdown';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { DefaultApi} from './api/api/DefaultApi'
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    DropdownModule.forRoot()
   ],
   providers: [PdxServiceService, DefaultApi],
   bootstrap: [AppComponent]
