@@ -8,6 +8,9 @@ import {PdxServiceService} from './pdx-service.service'
 })
 export class AppComponent {
   title = 'pdx-usps';
+  username = "";
+  password = "";
+  manifestList;
 
   constructor(private pdxService: PdxServiceService){
 
@@ -17,9 +20,20 @@ export class AppComponent {
   ngOnInit(): void {
     console.log("app component ng init called");
     this.pdxService.getManifestList().subscribe(
-      list => console.log(list),
+      list => { console.log(list); this.manifestList = list },
       err => console.log(err)
     )
-  }
+}
+
+   onLogin(): void {
+     console.log("on Login clicked");
+     console.log(this.username);
+      this.pdxService.getManifestListExtended(this.username, this.password).subscribe(
+      list => { console.log(list); this.manifestList = list },
+      err => console.log(err)
+    );
+    }
+
+  
 
 }

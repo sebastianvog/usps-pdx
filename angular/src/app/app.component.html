@@ -2,30 +2,45 @@
   {{title}}
 </h1>
 <div class="alert alert-info" role="alert">
-    This page lets you connect to your USPS PDX via your USPS gateway credentials.
-    Use on your own risk.
+  This page lets you connect to your USPS PDX data via your USPS gateway credentials. Use on your own risk.
 </div>
 
-<h2>List of uploaded files</h2>
+<div class="alert alert-danger" role="alert">In order to use this you need to allow <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">CORS</a> </div>
 
-<table class="table">
+<form class="form-inline">
+  <label class="sr-only" for="inlineFormInput">Name</label>
+  <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput" name="un" placeholder="User name" [(ngModel)]="username">
+
+  <label class="sr-only" for="inlineFormInputGroup">Username</label>
+  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+    <input type="password" class="form-control" id="inlineFormInputGroup" name="pw" placeholder="Password" [(ngModel)]="password">
+  </div>
+
+  <button type="submit" class="btn btn-primary" (click)="onLogin()">Login</button>
+</form>
+
+
+<br>
+<h2>List of uploaded Manifest files</h2>
+<div><br>
+</div>
+<table class="table" *ngIf="manifestList">
   <thead>
     <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
+      <th>Created Time</th>
+      <th>Sent Time</th>
+      <th>Environment</th>
+      <th>File name</th>
+      <th>Download</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
+    <tr *ngFor="let manifest of manifestList.manifests">
+      <td>{{manifest.createdTime}}</td>
+      <td>{{manifest.sentTime}}</td>
+      <td>{{manifest.environment}}</td>
+      <td>{{manifest.filename}}</td>
+      <td> <a href="https://pdx.usps.com/api/manifests/{{manifest.id}}"> Download</a>
     </tr>
   </tbody>
 </table>
