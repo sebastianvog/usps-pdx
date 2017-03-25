@@ -18,7 +18,6 @@ import { Response, ResponseContentType }                     from '@angular/http
 import { Observable }                                        from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import * as models                                           from '../model/models';
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
@@ -70,17 +69,13 @@ export class DefaultApi {
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
         if (pageNumber !== undefined) {
-            if(pageNumber instanceof Date) {
-                queryParameters.set('pageNumber', <any>pageNumber.d.toISOString());
-            } else {
+           {
                 queryParameters.set('pageNumber', <any>pageNumber);
             }
         }
 
         if (pageSize !== undefined) {
-            if(pageSize instanceof Date) {
-                queryParameters.set('pageSize', <any>pageSize.d.toISOString());
-            } else {
+          {
                 queryParameters.set('pageSize', <any>pageSize);
             }
         }
