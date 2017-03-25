@@ -18,7 +18,6 @@ import { Response, ResponseContentType }                     from '@angular/http
 import { Observable }                                        from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import * as models                                           from '../model/models';
 import { BASE_PATH }                                         from '../variables';
 import { Configuration }                                     from '../configuration';
 

@@ -19,4 +19,5 @@ import { DefaultApi} from './api/api/DefaultApi'
   providers: [PdxServiceService, DefaultApi],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
